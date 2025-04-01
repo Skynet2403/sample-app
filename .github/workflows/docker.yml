@@ -1,0 +1,24 @@
+name: Build and Run Flask App in Docker
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t sampleapp .
+
+    - name: Run container (test only)
+      run: docker run -d -p 5050:5050 --name samplerunning sampleapp
+
+    - name: Verify container is running
+      run: docker ps | grep sampleapp
